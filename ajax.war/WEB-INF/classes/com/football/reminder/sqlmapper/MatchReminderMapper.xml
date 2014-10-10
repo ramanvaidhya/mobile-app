@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.football.reminder.ivomapper.MatchReminderMapper" >
+  <resultMap id="BaseResultMap" type="com.football.reminder.vo.MatchReminder" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="email_id" property="emailId" jdbcType="VARCHAR" />
+    <result column="match_id" property="matchId" jdbcType="INTEGER" />
+    <result column="reminder_time" property="reminderTime" jdbcType="TIMESTAMP" />
+    <result column="reminder_type" property="reminderType" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, email_id, match_id, reminder_time, reminder_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from match_reminder
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from match_reminder
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.football.reminder.vo.MatchReminder" >
+    insert into match_reminder (id, email_id, match_id, 
+      reminder_time, reminder_type)
+    values (#{id,jdbcType=BIGINT}, #{emailId,jdbcType=VARCHAR}, #{matchId,jdbcType=INTEGER}, 
+      #{reminderTime,jdbcType=TIMESTAMP}, #{reminderType,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.football.reminder.vo.MatchReminder" >
+    insert into match_reminder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="emailId != null" >
+        email_id,
+      </if>
+      <if test="matchId != null" >
+        match_id,
+      </if>
+      <if test="reminderTime != null" >
+        reminder_time,
+      </if>
+      <if test="reminderType != null" >
+        reminder_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="emailId != null" >
+        #{emailId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchId != null" >
+        #{matchId,jdbcType=INTEGER},
+      </if>
+      <if test="reminderTime != null" >
+        #{reminderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reminderType != null" >
+        #{reminderType,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.football.reminder.vo.MatchReminder" >
+    update match_reminder
+    <set >
+      <if test="emailId != null" >
+        email_id = #{emailId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchId != null" >
+        match_id = #{matchId,jdbcType=INTEGER},
+      </if>
+      <if test="reminderTime != null" >
+        reminder_time = #{reminderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reminderType != null" >
+        reminder_type = #{reminderType,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.football.reminder.vo.MatchReminder" >
+    update match_reminder
+    set email_id = #{emailId,jdbcType=VARCHAR},
+      match_id = #{matchId,jdbcType=INTEGER},
+      reminder_time = #{reminderTime,jdbcType=TIMESTAMP},
+      reminder_type = #{reminderType,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+ <select id="selectSearch" resultMap="BaseResultMap" parameterType="com.football.reminder.vo.MatchReminder" >
+select * from Match_Reminder 
+<trim prefix="WHERE" prefixOverrides="AND |OR ">
+ <if test="emailId!=null">
+<if test="emailId!=''">
+<choose>
+<when test="emailId.startsWith('%') || emailId.endsWith('%')">
+AND email_id LIKE #{emailId, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND email_id = #{emailId, jdbcType=VARCHAR}
+</otherwise>
+</choose>
+</if>
+</if>
+<if test="matchId!=null">
+<if test="matchId!='0'">
+AND match_id = #{matchId, jdbcType=INTEGER}
+</if>
+</if>
+<if test="reminderTime!=null">
+AND reminder_time = #{reminderTime, jdbcType=TIMESTAMP}
+</if>
+<if test="reminderType!=null">
+<if test="reminderType!=''">
+<choose>
+<when test="reminderType.startsWith('%') || reminderType.endsWith('%')">
+AND reminder_type LIKE #{reminderType, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND reminder_type = #{reminderType, jdbcType=SMALLINT}
+</otherwise>
+</choose>
+</if>
+</if>
+<if test="id!=null">
+<if test="id!=''">
+<choose>
+<when test="id.startsWith('%') || id.endsWith('%')">
+AND id LIKE #{id, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND id = #{id, jdbcType=BIGINT}
+</otherwise>
+</choose>
+</if>
+</if>
+</trim>
+</select>
+ <select id="selectAll" resultMap="BaseResultMap" >
+select * from Match_Reminder
+</select>
+
+</mapper>

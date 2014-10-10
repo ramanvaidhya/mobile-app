@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.football.reminder.ivomapper.TeamSupportMapper" >
+  <resultMap id="BaseResultMap" type="com.football.reminder.vo.TeamSupport" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="email_id" property="emailId" jdbcType="VARCHAR" />
+    <result column="match_id" property="matchId" jdbcType="INTEGER" />
+    <result column="team_id" property="teamId" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, email_id, match_id, team_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from team_support
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from team_support
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.football.reminder.vo.TeamSupport" >
+    insert into team_support (id, email_id, match_id, 
+      team_id)
+    values (#{id,jdbcType=BIGINT}, #{emailId,jdbcType=VARCHAR}, #{matchId,jdbcType=INTEGER}, 
+      #{teamId,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.football.reminder.vo.TeamSupport" >
+    insert into team_support
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="emailId != null" >
+        email_id,
+      </if>
+      <if test="matchId != null" >
+        match_id,
+      </if>
+      <if test="teamId != null" >
+        team_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="emailId != null" >
+        #{emailId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchId != null" >
+        #{matchId,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null" >
+        #{teamId,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.football.reminder.vo.TeamSupport" >
+    update team_support
+    <set >
+      <if test="emailId != null" >
+        email_id = #{emailId,jdbcType=VARCHAR},
+      </if>
+      <if test="matchId != null" >
+        match_id = #{matchId,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null" >
+        team_id = #{teamId,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.football.reminder.vo.TeamSupport" >
+    update team_support
+    set email_id = #{emailId,jdbcType=VARCHAR},
+      match_id = #{matchId,jdbcType=INTEGER},
+      team_id = #{teamId,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+ <select id="selectSearch" resultMap="BaseResultMap" parameterType="com.football.reminder.vo.TeamSupport" >
+select * from Team_Support 
+<trim prefix="WHERE" prefixOverrides="AND |OR ">
+ <if test="emailId!=null">
+<if test="emailId!=''">
+<choose>
+<when test="emailId.startsWith('%') || emailId.endsWith('%')">
+AND email_id LIKE #{emailId, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND email_id = #{emailId, jdbcType=VARCHAR}
+</otherwise>
+</choose>
+</if>
+</if>
+<if test="matchId!=null">
+<if test="matchId!='0'">
+AND match_id = #{matchId, jdbcType=INTEGER}
+</if>
+</if>
+<if test="teamId!=null">
+<if test="teamId!=''">
+<choose>
+<when test="teamId.startsWith('%') || teamId.endsWith('%')">
+AND team_id LIKE #{teamId, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND team_id = #{teamId, jdbcType=SMALLINT}
+</otherwise>
+</choose>
+</if>
+</if>
+<if test="id!=null">
+<if test="id!=''">
+<choose>
+<when test="id.startsWith('%') || id.endsWith('%')">
+AND id LIKE #{id, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND id = #{id, jdbcType=BIGINT}
+</otherwise>
+</choose>
+</if>
+</if>
+</trim>
+</select>
+ <select id="selectAll" resultMap="BaseResultMap" >
+select * from Team_Support
+</select>
+
+</mapper>

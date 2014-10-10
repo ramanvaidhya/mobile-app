@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.football.reminder.ivomapper.MatchScheduleMapper" >
+  <resultMap id="BaseResultMap" type="com.football.reminder.vo.MatchSchedule" >
+    <id column="match_id" property="matchId" jdbcType="INTEGER" />
+    <result column="match_time" property="matchTime" jdbcType="TIMESTAMP" />
+    <result column="league_type" property="leagueType" jdbcType="VARCHAR" />
+    <result column="team_one" property="teamOne" jdbcType="VARCHAR" />
+    <result column="team_two" property="teamTwo" jdbcType="VARCHAR" />
+    <result column="venue" property="venue" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    match_id, match_time, league_type, team_one, team_two, venue, score
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from match_schedule
+    where match_id = #{matchId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from match_schedule
+    where match_id = #{matchId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.football.reminder.vo.MatchSchedule" >
+    insert into match_schedule (match_id, match_time, league_type, 
+      team_one, team_two, venue, 
+      score)
+    values (#{matchId,jdbcType=INTEGER}, #{matchTime,jdbcType=TIMESTAMP}, #{leagueType,jdbcType=VARCHAR}, 
+      #{teamOne,jdbcType=VARCHAR}, #{teamTwo,jdbcType=VARCHAR}, #{venue,jdbcType=VARCHAR}, 
+      #{score,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.football.reminder.vo.MatchSchedule" >
+    insert into match_schedule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="matchId != null" >
+        match_id,
+      </if>
+      <if test="matchTime != null" >
+        match_time,
+      </if>
+      <if test="leagueType != null" >
+        league_type,
+      </if>
+      <if test="teamOne != null" >
+        team_one,
+      </if>
+      <if test="teamTwo != null" >
+        team_two,
+      </if>
+      <if test="venue != null" >
+        venue,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="matchId != null" >
+        #{matchId,jdbcType=INTEGER},
+      </if>
+      <if test="matchTime != null" >
+        #{matchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leagueType != null" >
+        #{leagueType,jdbcType=VARCHAR},
+      </if>
+      <if test="teamOne != null" >
+        #{teamOne,jdbcType=VARCHAR},
+      </if>
+      <if test="teamTwo != null" >
+        #{teamTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="venue != null" >
+        #{venue,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.football.reminder.vo.MatchSchedule" >
+    update match_schedule
+    <set >
+      <if test="matchTime != null" >
+        match_time = #{matchTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leagueType != null" >
+        league_type = #{leagueType,jdbcType=VARCHAR},
+      </if>
+      <if test="teamOne != null" >
+        team_one = #{teamOne,jdbcType=VARCHAR},
+      </if>
+      <if test="teamTwo != null" >
+        team_two = #{teamTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="venue != null" >
+        venue = #{venue,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where match_id = #{matchId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.football.reminder.vo.MatchSchedule" >
+    update match_schedule
+    set match_time = #{matchTime,jdbcType=TIMESTAMP},
+      league_type = #{leagueType,jdbcType=VARCHAR},
+      team_one = #{teamOne,jdbcType=VARCHAR},
+      team_two = #{teamTwo,jdbcType=VARCHAR},
+      venue = #{venue,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR}
+    where match_id = #{matchId,jdbcType=INTEGER}
+  </update>
+ <select id="selectSearch" resultMap="BaseResultMap" parameterType="com.football.reminder.vo.MatchSchedule" >
+select * from Match_Schedule 
+<trim prefix="WHERE" prefixOverrides="AND |OR ">
+ <if test="matchTime!=null">
+AND match_time = #{matchTime, jdbcType=TIMESTAMP}
+</if>
+<if test="leagueType!=null">
+<if test="leagueType!=''">
+<choose>
+<when test="leagueType.startsWith('%') || leagueType.endsWith('%')">
+AND league_type LIKE #{leagueType, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND league_type = #{leagueType, jdbcType=VARCHAR}
+</otherwise>
+</choose>
+</if>
+</if>
+<if test="teamOne!=null">
+<if test="teamOne!=''">
+<choose>
+<when test="teamOne.startsWith('%') || teamOne.endsWith('%')">
+AND team_one LIKE #{teamOne, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND team_one = #{teamOne, jdbcType=VARCHAR}
+</otherwise>
+</choose>
+</if>
+</if>
+<if test="teamTwo!=null">
+<if test="teamTwo!=''">
+<choose>
+<when test="teamTwo.startsWith('%') || teamTwo.endsWith('%')">
+AND team_two LIKE #{teamTwo, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND team_two = #{teamTwo, jdbcType=VARCHAR}
+</otherwise>
+</choose>
+</if>
+</if>
+<if test="venue!=null">
+<if test="venue!=''">
+<choose>
+<when test="venue.startsWith('%') || venue.endsWith('%')">
+AND venue LIKE #{venue, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND venue = #{venue, jdbcType=VARCHAR}
+</otherwise>
+</choose>
+</if>
+</if>
+<if test="score!=null">
+<if test="score!=''">
+<choose>
+<when test="score.startsWith('%') || score.endsWith('%')">
+AND score LIKE #{score, jdbcType=VARCHAR}
+</when>
+<otherwise>
+AND score = #{score, jdbcType=VARCHAR}
+</otherwise>
+</choose>
+</if>
+</if>
+<if test="matchId!=null">
+<if test="matchId!='0'">
+AND match_id = #{matchId, jdbcType=INTEGER}
+</if>
+</if>
+</trim>
+</select>
+ <select id="selectAll" resultMap="BaseResultMap" >
+select * from Match_Schedule
+</select>
+
+</mapper>
